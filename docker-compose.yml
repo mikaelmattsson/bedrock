@@ -1,0 +1,26 @@
+version: '2'
+services:
+  web:
+    image: nginx:1.8
+    ports:
+      - 8081:80
+    links:
+      - php
+    volumes:
+      - .:/var/www/html
+      - ./docker/web/conf.d:/etc/nginx/conf.d
+  php:
+    build: ./docker/php
+    links:
+      - db
+    volumes:
+      - .:/var/www/html
+  db:
+    image: mysql
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: p4ssw0rd
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wp
+      MYSQL_PASSWORD: p4ssw0rd
